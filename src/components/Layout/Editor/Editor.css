@@ -1,0 +1,16 @@
+.editor {
+  height: 100vh;
+  grid-template-rows: auto 1fr auto;
+}
+.editor__header {
+  justify-content: end;
+  gap: 2rem;
+}
+.editor__textarea {
+  color: var(--primary-color);
+  outline: 1px solid transparent;
+}
+
+.editor__textarea:focus {
+  outline: 1px solid var(--border-color);
+}

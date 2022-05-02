@@ -7,7 +7,7 @@
 }
 
 .nav__item {
-  padding: 1rem;
+  padding: 1.2rem;
   height: fit-content;
   color: var(--foreground-color);
   cursor: pointer;

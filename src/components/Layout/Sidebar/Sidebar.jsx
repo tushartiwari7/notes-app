@@ -5,7 +5,7 @@ import NoteTile from "./NoteTile/NoteTile";
 const Sidebar = () => {
   return (
     <aside className="sidebar grid ">
-      <div className="sidebar__header text-center flex flex-center spread px-sm py-xs fs-m">
+      <div className="header text-center flex flex-center spread px-sm py-xs fs-m">
         All Notes
         <BsPencilSquare className="pointer icon fs-m" />
       </div>
