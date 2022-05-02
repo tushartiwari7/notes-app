@@ -1,7 +1,9 @@
 import "./Navigation.css";
 import { BsList, BsJournals, BsTrash, BsArchive } from "react-icons/bs";
+import { useState } from "react";
 
 export const Navigation = () => {
+  const [descriptiveView, setDescriptiveView] = useState(false);
   const navList = [
     {
       id: 1,
@@ -25,12 +27,16 @@ export const Navigation = () => {
         <li className="nav__item">
           <img src={`favicon.svg`} height="30" alt="logo" />
         </li>
-        <li className="nav__item icon">
+        <li
+          className="nav__item icon"
+          onClick={() => setDescriptiveView(!descriptiveView)}
+        >
           <BsList size={25} />
         </li>
         {navList.map(({ name, Icon, id }) => (
-          <li className="nav__item icon" title={name} key={id}>
+          <li className="nav__item icon flex" title={name} key={id}>
             <Icon size={25} />
+            {descriptiveView && <span className="px-sm fs-s">{name}</span>}
           </li>
         ))}
       </ul>

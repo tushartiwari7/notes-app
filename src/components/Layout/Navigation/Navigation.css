@@ -1,5 +1,6 @@
 .nav {
   background-color: var(--secondary-background-color);
+  transition: var(--transition);
 }
 
 .nav__list {
@@ -11,4 +12,5 @@
   height: fit-content;
   color: var(--foreground-color);
   cursor: pointer;
+  align-items: center;
 }
