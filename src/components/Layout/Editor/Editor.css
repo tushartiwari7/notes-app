@@ -5,12 +5,65 @@
 .editor__header {
   justify-content: end;
   gap: 2rem;
+  border-bottom: 2px solid var(--border-color);
+}
+.editor__priority {
+  font-size: 1.2rem;
+  outline: 2px solid transparent;
+  color: var(--foreground-color);
 }
 .editor__textarea {
   color: var(--primary-color);
   outline: 1px solid transparent;
+  overflow-y: auto;
+  transition: var(--transition);
 }
 
+[contenteditable="true"]:empty:before {
+  content: attr(placeholder);
+  color: #555;
+  display: block;
+}
 .editor__textarea:focus {
   outline: 1px solid var(--border-color);
+}
+.editor__tags {
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.editor__tag {
+  display: inline-block;
+  background-color: var(--secondary-background-color);
+  padding: 5px 10px;
+}
+.editor__tag > svg {
+  top: -5px;
+  right: 0;
+  background-color: var(--danger-color);
+  color: var(--background-color);
+  transition: var(--transition);
+  visibility: hidden;
+  opacity: 0;
+}
+
+.editor__tag:hover > svg {
+  visibility: visible;
+  opacity: 1;
+}
+
+.editor__tag-input {
+  color: var(--foreground-color);
+  outline: 1px solid transparent;
+  border-radius: 5rem;
+}
+.editor__colors {
+  gap: 10px;
+}
+.editor__color {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  background-color: var(--primary-color);
+  border: 1px solid var(--border-color);
+  cursor: pointer;
 }
