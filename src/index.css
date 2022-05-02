@@ -29,7 +29,9 @@ code {
   --accent-color: #84a4f0;
   --secondary-accent-color: #50575e;
   --highlight-color: rgba(51, 97, 204, 0.4);
+
+  --transition: all 0.3s ease;
 }
 html {
-  font-size: 16px;
+  font-size: 80%;
 }

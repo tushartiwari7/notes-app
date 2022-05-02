@@ -1,10 +1,20 @@
 .sidebar {
   min-width: 10rem;
   border-right: 1px solid var(--border-color);
+  grid-template-rows: auto auto 1fr;
+  height: 100vh;
 }
 .sidebar__header {
   color: var(--primary-color);
   border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar__list {
+  overflow: auto;
+  scrollbar-width: none;
+}
+.sidebar__list::-webkit-scrollbar {
+  display: none;
 }
 .sidebar__search {
   outline: 1px solid transparent;
