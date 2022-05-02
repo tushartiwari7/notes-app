@@ -1,0 +1,19 @@
+.sidebar {
+  min-width: 10rem;
+  border-right: 1px solid var(--border-color);
+}
+.sidebar__header {
+  color: var(--primary-color);
+  border-bottom: 1px solid var(--border-color);
+}
+.sidebar__search {
+  outline: 1px solid transparent;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-gray);
+  padding-left: 3rem;
+}
+.sidebar__search-icon {
+  top: 50%;
+  transform: translateY(-50%);
+  left: 1rem;
+}
