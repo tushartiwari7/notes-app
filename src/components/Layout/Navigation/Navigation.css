@@ -1,0 +1,16 @@
+.nav {
+  background-color: var(--secondary-background-color);
+  transition: var(--transition);
+}
+
+.nav__list {
+  list-style: none;
+}
+
+.nav__item {
+  padding: 1.2rem;
+  height: fit-content;
+  color: var(--foreground-color);
+  cursor: pointer;
+  align-items: center;
+}
