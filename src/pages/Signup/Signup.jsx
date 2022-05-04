@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useUser } from "../../context/Context";
+import { signupHandler } from "../../services";
 import "./Signup.css";
 const Signup = () => {
+  const { setUser } = useUser();
+  const navigate = useNavigate();
   const [passwordType, setPasswordType] = useState("password");
   const [userCreds, setUserCreds] = useState({
     firstName: "",
@@ -14,11 +18,21 @@ const Signup = () => {
   const togglePasswordType = () =>
     setPasswordType(passwordType === "password" ? "text" : "password");
 
+  const signup = async (e) => {
+    e.preventDefault();
+    const resp = await signupHandler(userCreds);
+    setUser((prev) => ({
+      ...prev,
+      ...resp.user,
+      token: resp.token,
+      isLoggedIn: true,
+    }));
+    navigate("/");
+  };
+
   return (
     <form
-      // onSubmit={(e) =>
-      //   handlers.signupHandler(e, userCreds, location.state.from)
-      // }
+      onSubmit={signup}
       className="flex flex-center flex-col rounded-s signup-form gap2"
     >
       <h3 className="h2 fw-light">Let's get Started</h3>

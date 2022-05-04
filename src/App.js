@@ -1,9 +1,17 @@
-import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import "./App.css";
 import Auth from "./components/Auth/Auth";
 import { Layout } from "./components/Layout/Layout";
+import { useUser } from "./context/Context";
 import { Login, Signup } from "./pages";
 function App() {
+  const navigate = useNavigate();
+  const { user } = useUser();
+  useEffect(() => {
+    if (!user.isLoggedIn) navigate("/auth", { replace: true });
+    // eslint-disable-next-line
+  }, []);
   return (
     <div className="App">
       <Routes>
