@@ -1,4 +1,5 @@
 @import url("https://elevate-ui.vercel.app/components/components.css");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap");
 
 body {
   margin: 0;
@@ -29,8 +30,8 @@ code {
   --accent-color: #84a4f0;
   --secondary-accent-color: #50575e;
   --highlight-color: rgba(51, 97, 204, 0.4);
-
   --transition: all 0.3s ease;
+  --highlighted-font: "Poppins", sans-serif;
 }
 html {
   font-size: 80%;

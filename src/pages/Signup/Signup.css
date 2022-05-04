@@ -1,0 +1,17 @@
+.signup-form {
+  font-family: var(--highlighted-font);
+  width: 70%;
+  margin: auto;
+}
+.signup-form > .h2,
+.signup-form .fs-m {
+  font-family: var(--highlighted-font);
+}
+.signup-form .input {
+  color: var(--primary-color);
+  outline: 1px solid transparent;
+  border-bottom: 2px solid var(--border-color);
+}
+.gap2 {
+  gap: 2rem;
+}

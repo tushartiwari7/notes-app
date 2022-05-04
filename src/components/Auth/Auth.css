@@ -1,0 +1,4 @@
+.auth {
+  height: 100vh;
+  grid-template-columns: 1fr 1fr;
+}
