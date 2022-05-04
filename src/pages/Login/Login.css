@@ -1,0 +1,39 @@
+.login_input {
+  color: var(--foreground-color);
+  padding: 5px 10px;
+  outline: 1px solid transparent;
+  border-bottom: 2px solid var(--border-color);
+}
+.eye-icon {
+  right: 1rem;
+  top: 50%;
+  cursor: pointer;
+}
+
+.auth .btn {
+  border: none;
+  padding: 5px 10px;
+}
+.auth .btn-primary {
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  font-family: var(--highlighted-font);
+}
+.auth .btn-outline-primary {
+  color: var(--primary-color);
+}
+.auth .btn-outline-primary:hover {
+  background-color: var(--accent-color);
+  opacity: 1;
+}
+
+.login-form {
+  font-family: var(--highlighted-font);
+  width: 50%;
+  margin: auto;
+  gap: 2rem;
+}
+
+.auth .link {
+  color: var(--highlight-color);
+}

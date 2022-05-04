@@ -26,6 +26,17 @@ const Editor = () => {
       hexCode: "#1C1917",
     },
   ];
+
+  const debounce = (func, delay) => {
+    let inDebounce;
+    return (val) => {
+      clearTimeout(inDebounce);
+      inDebounce = setTimeout(() => func(val), delay);
+    };
+  };
+  // DEBOUNCED is also a function.
+  const debounced = debounce((val) => console.log(val), 500);
+
   return (
     <main className="main grid editor">
       <header className="editor__header text-center flex flex-center px-sm py-xs fs-m">
@@ -44,6 +55,11 @@ const Editor = () => {
         contentEditable
         className="editor__textarea input p-lg fs-m"
         placeholder="Start Typing..."
+        onInput={(e) =>
+          debounced(
+            Array.from(e.target.childNodes).map((node) => node.textContent)
+          )
+        }
       ></div>
       <footer className="editor__footer flex p-xs flex-center spread">
         <ul className="editor__tags flex flex-center list">
