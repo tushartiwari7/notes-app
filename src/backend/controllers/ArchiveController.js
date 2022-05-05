@@ -50,7 +50,7 @@ export const moveToArchivesHandler = function (schema, request) {
   user.notes = newNotes;
   user.archives = newArchives;
   this.db.users.update({ _id: user._id }, user);
-  return new Response(200, {}, { archives: newArchives });
+  return new Response(200, {}, { archives: newArchives, notes: newNotes });
 };
 
 /**

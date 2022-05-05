@@ -5,7 +5,7 @@ export const moveToArchive = async (noteId) => {
     "POST",
     `/api/archives/add/${noteId}`
   );
-  return { archives: data.archives, status };
+  return { archives: data.archives, notes: data.notes, status };
 };
 export const restoreFromArchive = async (noteId) => {
   const { data, status } = await needAxios(
