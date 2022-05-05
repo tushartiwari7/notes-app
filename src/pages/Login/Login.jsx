@@ -84,7 +84,10 @@ const Login = () => {
           className="btn btn-outline-primary full-width p-xs rounded-s my-sm fs-m"
           type="button"
           onClick={() =>
-            login({ email: "guestuser@gmail.com", password: "guestUser123" })
+            login({
+              email: process.env.REACT_APP_TEST_MAIL,
+              password: process.env.REACT_APP_TEST_PASSWORD,
+            })
           }
         >
           Login as Guest
