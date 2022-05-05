@@ -37,6 +37,7 @@ const Login = () => {
           Email
           <input
             type="text"
+            required
             placeholder="johnDoe@gmail.com"
             className="login_input input rounded-s full-width my-xs fs-s"
             value={userCreds.email}
@@ -49,6 +50,7 @@ const Login = () => {
           Password
           <input
             type={passwordType}
+            required
             placeholder="johnDoe123"
             className="login_input input rounded-s full-width my-xs fs-s"
             value={userCreds.password}

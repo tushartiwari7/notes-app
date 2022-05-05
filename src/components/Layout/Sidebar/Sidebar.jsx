@@ -2,12 +2,29 @@ import React from "react";
 import "./Sidebar.css";
 import { BsPencilSquare, BsSearch } from "react-icons/bs";
 import NoteTile from "./NoteTile/NoteTile";
+import { createNew } from "../../../services";
+import { useUser } from "../../../context/Context";
+import { useNavigate } from "react-router-dom";
 const Sidebar = () => {
+  const {
+    user: { notes },
+    setUser,
+  } = useUser();
+  const navigator = useNavigate();
+
+  const createNote = async () => {
+    const { note } = await createNew();
+    setUser((prev) => ({ ...prev, notes: [...prev.notes, note] }));
+    navigator("/editor", { state: { note } });
+  };
+
   return (
     <aside className="sidebar grid ">
       <div className="header text-center flex flex-center spread px-sm py-xs fs-m">
         All Notes
-        <BsPencilSquare className="pointer icon fs-m" />
+        <i title="Create Note" onClick={createNote}>
+          <BsPencilSquare className="pointer icon fs-m" />
+        </i>
       </div>
       <div className="pos-rel">
         <BsSearch size={20} className="sidebar__search-icon pos-abs" />
@@ -17,24 +34,9 @@ const Sidebar = () => {
         />
       </div>
       <ul className="sidebar__list">
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
-        <NoteTile />
+        {notes?.map((note) => (
+          <NoteTile key={note._id} note={note} />
+        ))}
       </ul>
     </aside>
   );

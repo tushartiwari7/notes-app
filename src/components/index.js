@@ -1,1 +1,3 @@
-export * from "./components/Layout/Layout";
+export * from "./Layout/Layout";
+export * from "./Placeholder/Placeholder";
+export * from "./Editor/Editor";
