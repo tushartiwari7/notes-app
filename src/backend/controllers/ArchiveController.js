@@ -24,6 +24,34 @@ export const getAllArchivedNotesHandler = function (schema, request) {
   }
   return new Response(200, {}, { archives: user.archives });
 };
+/**
+ * move note from notes to archieve.
+ * send POST Request at /api/archives/add/:noteId
+ *  */
+
+export const moveToArchivesHandler = function (schema, request) {
+  const user = requiresAuth.call(this, request);
+  if (!user) {
+    return new Response(
+      404,
+      {},
+      {
+        errors: ["The email you entered is not Registered. Not Found error"],
+      }
+    );
+  }
+  const { noteId } = request.params;
+
+  const { notes, archives } = user;
+  const note = notes.find((note) => note._id === noteId);
+  const newNotes = notes.filter((note) => note._id !== noteId);
+  const newArchives = [...archives, note];
+
+  user.notes = newNotes;
+  user.archives = newArchives;
+  this.db.users.update({ _id: user._id }, user);
+  return new Response(200, {}, { archives: newArchives });
+};
 
 /**
  * This handler handles deletes note from archive.
@@ -64,7 +92,7 @@ export const restoreFromArchivesHandler = function (schema, request) {
     );
   }
   const { noteId } = request.params;
-  const restoredNote = user.archives.filter((note) => note._id === noteId)[0];
+  const restoredNote = user.archives.find((note) => note._id === noteId);
   user.archives = user.archives.filter((note) => note._id !== noteId);
   user.notes.push({ ...restoredNote });
   this.db.users.update({ _id: user._id }, user);

@@ -6,12 +6,15 @@ import {
   BsTrash,
   BsArchive,
   BsX,
+  BsArchiveFill,
 } from "react-icons/bs";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { updateNote } from "../../services";
 import { useUser } from "../../context/Context";
+import { moveToArchive, restoreFromArchive } from "../../services/archive";
 export const Editor = () => {
   const {
+    user: { archives },
     setUser,
     pinned,
     setPin,
@@ -20,8 +23,10 @@ export const Editor = () => {
   const location = useLocation();
   const { note: oldNote } = location.state;
   const editorRef = useRef(null);
+  const navigate = useNavigate();
+
   const [themeColor, setThemeColor] = useState("#1b1b1e");
-  const [tags, setTags] = useState(["JavaScript", "React"]);
+  const [tags, setTags] = useState([]);
   const [priority, setPriority] = useState("");
 
   const themes = [
@@ -68,6 +73,16 @@ export const Editor = () => {
     }));
   };
 
+  const moveToArchivesHandler = async (id) => {
+    const { archives, status } = await moveToArchive(id);
+    setUser((user) => ({
+      ...user,
+      notes: user.notes.filter((note) => note._id !== id),
+      archives,
+    }));
+    if (status === 200) navigate("/");
+  };
+
   const updateNoteColorHandler = async (color) => {
     const { note } = await updateNote({
       themeColor: color,
@@ -110,6 +125,16 @@ export const Editor = () => {
     setPriority(priority);
   };
 
+  const removeFromArchiveHandler = async (id) => {
+    const { archives, notes, status } = await restoreFromArchive(id);
+    setUser((user) => ({
+      ...user,
+      notes,
+      archives,
+    }));
+    if (status === 200) navigate("/");
+  };
+
   const debounce = (func, delay) => {
     let inDebounce;
     return (val) => {
@@ -126,10 +151,10 @@ export const Editor = () => {
     setTags(oldNote.tags);
     setPriority(oldNote.priority);
     setPin(oldNote.isPinned);
-    console.log(oldNote);
     return () => {
       ref.value = "";
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [oldNote, oldNote._id]);
 
   return (
@@ -156,7 +181,19 @@ export const Editor = () => {
             onClick={() => updateNotePinHandler(true, oldNote._id)}
           />
         )}
-        <BsArchive className="pointer icon fs-m" />
+        {archives?.some((archive) => archive._id === oldNote._id) ? (
+          <BsArchiveFill
+            className="pointer icon fs-m"
+            title="Remove From Archive"
+            onClick={() => removeFromArchiveHandler(oldNote._id)}
+          />
+        ) : (
+          <BsArchive
+            className="pointer icon fs-m"
+            title="Move to archive"
+            onClick={() => moveToArchivesHandler(oldNote._id)}
+          />
+        )}
         <BsTrash className="pointer icon fs-m" />
       </header>
       <textarea

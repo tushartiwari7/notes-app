@@ -4,14 +4,15 @@ import { BsPencilSquare, BsSearch } from "react-icons/bs";
 import NoteTile from "./NoteTile/NoteTile";
 import { createNew } from "../../../services";
 import { useUser } from "../../../context/Context";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 const Sidebar = () => {
   const {
-    user: { notes },
+    user: { notes, archives },
     setUser,
   } = useUser();
   const navigator = useNavigate();
-
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("showOnly");
   const createNote = async () => {
     const { note } = await createNew();
     setUser((prev) => ({ ...prev, notes: [...prev.notes, note] }));
@@ -21,7 +22,11 @@ const Sidebar = () => {
   return (
     <aside className="sidebar grid">
       <div className="header text-center flex flex-center spread px-sm py-xs fs-m">
-        All Notes
+        {page === "archived"
+          ? `Archived Notes (${archives?.length})`
+          : page === "trashed"
+          ? `Trash`
+          : `All Notes (${notes?.length})`}
         <i title="Create Note" onClick={createNote}>
           <BsPencilSquare className="pointer icon fs-m" />
         </i>
@@ -34,9 +39,11 @@ const Sidebar = () => {
         />
       </div>
       <ul className="sidebar__list">
-        {notes?.map((note) => (
-          <NoteTile key={note._id} note={note} />
-        ))}
+        {(page === "archived" ? archives : notes)
+          ?.sort((a, b) => b.isPinned - a.isPinned)
+          .map((note) => (
+            <NoteTile key={note._id} note={note} />
+          ))}
       </ul>
     </aside>
   );

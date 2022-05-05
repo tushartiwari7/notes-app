@@ -11,6 +11,7 @@ export const ContextProvider = ({ children }) => {
     setUser((user) => ({
       ...user,
       notes: user.notes.map((node) => (node._id === _id ? note : node)),
+      archives: user.archives.map((node) => (node._id === _id ? note : node)),
     }));
     setPin(note.isPinned);
   };
