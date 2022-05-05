@@ -1,13 +1,13 @@
 import { Navigation } from "./Navigation/Navigation";
 import "./Layout.css";
 import Sidebar from "./Sidebar/Sidebar";
-import Editor from "./Editor/Editor";
+import { Outlet } from "react-router-dom";
 export const Layout = () => {
   return (
     <div className="layout grid">
       <Navigation />
       <Sidebar />
-      <Editor />
+      <Outlet />
     </div>
   );
 };

@@ -13,6 +13,14 @@
   -webkit-box-orient: vertical;
 }
 
+.tile__content > *:hover {
+  text-decoration: none;
+}
+
+.tile__content > p {
+  color: var(--foreground-color);
+  text-decoration: none;
+}
 .tile__title {
   color: var(--primary-color);
 }

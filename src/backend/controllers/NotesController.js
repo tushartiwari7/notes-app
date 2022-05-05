@@ -45,13 +45,10 @@ export const createNoteHandler = function (schema, request) {
       );
     }
     const { note } = JSON.parse(request.requestBody);
-    if (!note.tags) {
-      user.notes.push({ ...note, _id: uuid(), tags: [] });
-    } else {
-      user.notes.push({ ...note, _id: uuid() });
-    }
+    const newNote = { ...note, _id: uuid(), tags: note.tags ?? [] };
+    user.notes.push(newNote);
     this.db.users.update({ _id: user._id }, user);
-    return new Response(201, {}, { notes: user.notes });
+    return new Response(201, {}, { note: newNote });
   } catch (error) {
     return new Response(
       500,
@@ -118,7 +115,7 @@ export const updateNoteHandler = function (schema, request) {
     const noteIndex = user.notes.findIndex((note) => note._id === noteId);
     user.notes[noteIndex] = { ...user.notes[noteIndex], ...note };
     this.db.users.update({ _id: user._id }, user);
-    return new Response(201, {}, { notes: user.notes });
+    return new Response(201, {}, { note: user.notes[noteIndex] });
   } catch (error) {
     return new Response(
       500,
