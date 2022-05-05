@@ -19,7 +19,7 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="sidebar grid ">
+    <aside className="sidebar grid">
       <div className="header text-center flex flex-center spread px-sm py-xs fs-m">
         All Notes
         <i title="Create Note" onClick={createNote}>

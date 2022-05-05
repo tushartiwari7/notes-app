@@ -45,7 +45,13 @@ export const createNoteHandler = function (schema, request) {
       );
     }
     const { note } = JSON.parse(request.requestBody);
-    const newNote = { ...note, _id: uuid(), tags: note.tags ?? [] };
+    const newNote = {
+      ...note,
+      _id: uuid(),
+      tags: note.tags ?? [],
+      priority: note.priority ?? "",
+      isPinned: note.isPinned ?? false,
+    };
     user.notes.push(newNote);
     this.db.users.update({ _id: user._id }, user);
     return new Response(201, {}, { note: newNote });

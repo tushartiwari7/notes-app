@@ -1,14 +1,29 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./Editor.css";
-import { BsPinAngle, BsTrash, BsArchive, BsX } from "react-icons/bs";
+import {
+  BsPinAngle,
+  BsPinAngleFill,
+  BsTrash,
+  BsArchive,
+  BsX,
+} from "react-icons/bs";
 import { useLocation } from "react-router-dom";
 import { updateNote } from "../../services";
 import { useUser } from "../../context/Context";
 export const Editor = () => {
-  const { setUser } = useUser();
+  const {
+    setUser,
+    pinned,
+    setPin,
+    handlers: { updateNotePinHandler },
+  } = useUser();
+  const location = useLocation();
+  const { note: oldNote } = location.state;
   const editorRef = useRef(null);
   const [themeColor, setThemeColor] = useState("#1b1b1e");
   const [tags, setTags] = useState(["JavaScript", "React"]);
+  const [priority, setPriority] = useState("");
+
   const themes = [
     {
       name: "Purple",
@@ -31,9 +46,6 @@ export const Editor = () => {
       hexCode: "#1C1917",
     },
   ];
-
-  const location = useLocation();
-  const { note: oldNote } = location.state;
 
   const updateNoteHandler = async (textContent) => {
     let [title, ...content] = textContent.split(`\n`);
@@ -85,6 +97,19 @@ export const Editor = () => {
     setTags(note.tags);
   };
 
+  const updateNotePriorityHandler = async (priority) => {
+    const { note } = await updateNote({
+      priority,
+      _id: oldNote._id,
+    });
+
+    setUser((user) => ({
+      ...user,
+      notes: user.notes.map((node) => (node._id === oldNote._id ? note : node)),
+    }));
+    setPriority(priority);
+  };
+
   const debounce = (func, delay) => {
     let inDebounce;
     return (val) => {
@@ -92,13 +117,16 @@ export const Editor = () => {
       inDebounce = setTimeout(() => func(val), delay);
     };
   };
-  const debounced = debounce(updateNoteHandler, 300);
+  const debounced = debounce(updateNoteHandler, 500);
 
   useEffect(() => {
     const ref = editorRef.current;
     ref.value = oldNote.title + "\r\n" + oldNote.content;
     setThemeColor(oldNote.themeColor);
     setTags(oldNote.tags);
+    setPriority(oldNote.priority);
+    setPin(oldNote.isPinned);
+    console.log(oldNote);
     return () => {
       ref.value = "";
     };
@@ -107,13 +135,27 @@ export const Editor = () => {
   return (
     <main className="main grid editor">
       <header className="editor__header text-center flex flex-center px-sm py-xs fs-m">
-        <select className="editor__priority input">
+        <select
+          className="editor__priority input"
+          value={priority}
+          onChange={(e) => updateNotePriorityHandler(e.target.value)}
+        >
           <option value="">Priority</option>
           <option value="low">Low</option>
           <option value="medium">medium</option>
           <option value="high">High</option>
         </select>
-        <BsPinAngle className="pointer icon fs-m" />
+        {pinned ? (
+          <BsPinAngleFill
+            className="pointer icon fs-m"
+            onClick={() => updateNotePinHandler(false, oldNote._id)}
+          />
+        ) : (
+          <BsPinAngle
+            className="pointer icon fs-m"
+            onClick={() => updateNotePinHandler(true, oldNote._id)}
+          />
+        )}
         <BsArchive className="pointer icon fs-m" />
         <BsTrash className="pointer icon fs-m" />
       </header>
