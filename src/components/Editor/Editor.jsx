@@ -8,7 +8,7 @@ import {
   BsX,
   BsArchiveFill,
 } from "react-icons/bs";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { useUser } from "../../context/Context";
 import { useHandlers } from "../../hooks/useHandlers";
 import { themes } from "../../utils/utils";
@@ -19,6 +19,8 @@ export const Editor = () => {
     setPin,
     handlers: { updateNotePinHandler },
   } = useUser();
+  const [searchParams] = useSearchParams();
+  const page = searchParams.get("showOnly");
   const location = useLocation();
   const { note: oldNote } = location.state;
   const editorRef = useRef(null);
@@ -29,12 +31,18 @@ export const Editor = () => {
     setTags,
     priority,
     setPriority,
+    // notes
     updateNoteHandler,
     updateNoteColorHandler,
     updateNotePriorityHandler,
     updateNoteTagsHandler,
+    // archive
     removeFromArchiveHandler,
     moveToArchivesHandler,
+    // trash
+    moveToTrashHandler,
+    permanentlyDeleteHandler,
+    restoreFromTrashHandler,
   } = useHandlers();
 
   const debounce = (func, delay) => {
@@ -62,50 +70,76 @@ export const Editor = () => {
   return (
     <main className="main grid editor">
       <header className="editor__header text-center flex flex-center px-sm py-xs fs-m">
-        <select
-          className="editor__priority input"
-          value={priority}
-          onChange={(e) =>
-            updateNotePriorityHandler(e.target.value, oldNote._id)
-          }
-        >
-          <option value="">Priority</option>
-          <option value="low">Low</option>
-          <option value="medium">medium</option>
-          <option value="high">High</option>
-        </select>
-        {pinned ? (
-          <BsPinAngleFill
-            className="pointer icon fs-m"
-            onClick={() => updateNotePinHandler(false, oldNote._id)}
-          />
+        {page !== "trashed" ? (
+          <>
+            <select
+              className="editor__priority input"
+              value={priority}
+              onChange={(e) =>
+                updateNotePriorityHandler(e.target.value, oldNote._id)
+              }
+            >
+              <option value="">Priority</option>
+              <option value="low">Low</option>
+              <option value="medium">medium</option>
+              <option value="high">High</option>
+            </select>
+            {pinned ? (
+              <BsPinAngleFill
+                className="pointer icon fs-m"
+                onClick={() => updateNotePinHandler(false, oldNote._id)}
+              />
+            ) : (
+              <BsPinAngle
+                className="pointer icon fs-m"
+                onClick={() => updateNotePinHandler(true, oldNote._id)}
+              />
+            )}
+            {archives?.some((archive) => archive._id === oldNote._id) ? (
+              <BsArchiveFill
+                className="pointer icon fs-m"
+                title="Remove From Archive"
+                onClick={() => removeFromArchiveHandler(oldNote._id)}
+              />
+            ) : (
+              <BsArchive
+                className="pointer icon fs-m"
+                title="Move to archive"
+                onClick={() => moveToArchivesHandler(oldNote._id)}
+              />
+            )}
+            <BsTrash
+              className="pointer icon fs-m"
+              onClick={() => moveToTrashHandler(oldNote._id)}
+            />
+          </>
         ) : (
-          <BsPinAngle
-            className="pointer icon fs-m"
-            onClick={() => updateNotePinHandler(true, oldNote._id)}
-          />
+          <>
+            <button
+              className="btn btn-outline-warning p-xs"
+              onClick={() => permanentlyDeleteHandler(oldNote._id)}
+            >
+              {" "}
+              Permanently Delete Note
+            </button>
+            <button
+              className="btn btn-warning p-xs"
+              onClick={() => restoreFromTrashHandler(oldNote._id)}
+            >
+              Restore Note
+            </button>
+          </>
         )}
-        {archives?.some((archive) => archive._id === oldNote._id) ? (
-          <BsArchiveFill
-            className="pointer icon fs-m"
-            title="Remove From Archive"
-            onClick={() => removeFromArchiveHandler(oldNote._id)}
-          />
-        ) : (
-          <BsArchive
-            className="pointer icon fs-m"
-            title="Move to archive"
-            onClick={() => moveToArchivesHandler(oldNote._id)}
-          />
-        )}
-        <BsTrash className="pointer icon fs-m" />
       </header>
       <textarea
         ref={editorRef}
         style={{ backgroundColor: themeColor }}
-        className="editor__textarea input p-lg fs-m"
+        className={`editor__textarea input p-lg fs-m ${
+          page === "trashed" ? "readOnly" : ""
+        }`}
         defaultValue={oldNote.title + "\r\n" + oldNote.content}
         placeholder="Start Typing..."
+        readOnly={page === "trashed"}
         onChange={(e) =>
           debounced({
             textContent: e.target.value,

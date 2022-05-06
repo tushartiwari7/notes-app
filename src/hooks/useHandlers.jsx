@@ -1,7 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/Context";
-import { moveToArchive, restoreFromArchive, updateNote } from "../services";
+import {
+  moveToArchive,
+  moveToTrash,
+  permanentlyDelete,
+  restoreAll,
+  restoreFromArchive,
+  restoreFromTrash,
+  updateNote,
+} from "../services";
 
 export const useHandlers = () => {
   const { setUser } = useUser();
@@ -74,7 +82,7 @@ export const useHandlers = () => {
       notes,
       archives,
     }));
-    if (status === 200) navigate("/");
+    if (status === 200) navigate("/?showOnly=archived");
   };
 
   const removeFromArchiveHandler = async (id) => {
@@ -83,6 +91,44 @@ export const useHandlers = () => {
       ...user,
       notes,
       archives,
+    }));
+    if (status === 200) navigate("/");
+  };
+
+  const moveToTrashHandler = async (id) => {
+    const { trash, notes, status } = await moveToTrash(id);
+    setUser((user) => ({
+      ...user,
+      notes,
+      trash,
+    }));
+    if (status === 200) navigate("/?showOnly=trashed");
+  };
+
+  const permanentlyDeleteHandler = async (id) => {
+    const { trash } = await permanentlyDelete(id);
+    setUser((user) => ({
+      ...user,
+      trash,
+    }));
+  };
+
+  const restoreFromTrashHandler = async (id) => {
+    const { trash, notes, status } = await restoreFromTrash(id);
+    setUser((user) => ({
+      ...user,
+      notes,
+      trash,
+    }));
+    if (status === 200) navigate("/");
+  };
+
+  const restoreAllHandler = async () => {
+    const { notes, status } = await restoreAll();
+    setUser((user) => ({
+      ...user,
+      notes,
+      trash: [],
     }));
     if (status === 200) navigate("/");
   };
@@ -98,5 +144,9 @@ export const useHandlers = () => {
     updateNotePriorityHandler,
     moveToArchivesHandler,
     removeFromArchiveHandler,
+    moveToTrashHandler,
+    permanentlyDeleteHandler,
+    restoreFromTrashHandler,
+    restoreAllHandler,
   };
 };

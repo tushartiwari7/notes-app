@@ -1,3 +1,8 @@
+.btn-restore {
+  background-color: var(--danger-color);
+  font-family: var(--highlighted-font);
+  padding: 5px 10px;
+}
 .sidebar {
   min-width: 20rem;
   border-right: 1px solid var(--border-color);

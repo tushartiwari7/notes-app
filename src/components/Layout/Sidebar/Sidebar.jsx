@@ -5,11 +5,13 @@ import NoteTile from "./NoteTile/NoteTile";
 import { createNew } from "../../../services";
 import { useUser } from "../../../context/Context";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useHandlers } from "../../../hooks/useHandlers";
 const Sidebar = () => {
   const {
-    user: { notes, archives },
+    user: { notes, archives, trash },
     setUser,
   } = useUser();
+  const { restoreAllHandler } = useHandlers();
   const navigator = useNavigate();
   const [searchParams] = useSearchParams();
   const page = searchParams.get("showOnly");
@@ -25,11 +27,21 @@ const Sidebar = () => {
         {page === "archived"
           ? `Archived Notes (${archives?.length})`
           : page === "trashed"
-          ? `Trash`
+          ? `Trash (${trash?.length})`
           : `All Notes (${notes?.length})`}
-        <i title="Create Note" onClick={createNote}>
-          <BsPencilSquare className="pointer icon fs-m" />
-        </i>
+        {page === "trashed" ? (
+          <button
+            className="btn btn-restore rounded-m"
+            onClick={restoreAllHandler}
+          >
+            {" "}
+            Restore All
+          </button>
+        ) : (
+          <i title="Create Note" onClick={createNote}>
+            <BsPencilSquare className="pointer icon fs-m" />
+          </i>
+        )}
       </div>
       <div className="pos-rel">
         <BsSearch size={20} className="sidebar__search-icon pos-abs" />
@@ -39,7 +51,7 @@ const Sidebar = () => {
         />
       </div>
       <ul className="sidebar__list">
-        {(page === "archived" ? archives : notes)
+        {(page === "archived" ? archives : page === "trashed" ? trash : notes)
           ?.sort((a, b) => b.isPinned - a.isPinned)
           .map((note) => (
             <NoteTile key={note._id} note={note} />
