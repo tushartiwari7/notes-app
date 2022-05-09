@@ -1,10 +1,10 @@
 import React from "react";
 import "./Sidebar.css";
-import { BsPencilSquare, BsSearch } from "react-icons/bs";
+import { BsPencilSquare } from "react-icons/bs";
 import NoteTile from "./NoteTile/NoteTile";
 import { createNew } from "../../../services";
 import { useUser } from "../../../context/Context";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useHandlers } from "../../../hooks/useHandlers";
 const Sidebar = () => {
   const {
@@ -14,7 +14,12 @@ const Sidebar = () => {
   const { restoreAllHandler } = useHandlers();
   const navigator = useNavigate();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const page = searchParams.get("showOnly");
+
+  const notesToRender =
+    page === "archived" ? archives : page === "trashed" ? trash : notes;
+
   const createNote = async () => {
     const { note } = await createNew();
     setUser((prev) => ({ ...prev, notes: [...prev.notes, note] }));
@@ -22,7 +27,9 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="sidebar grid">
+    <aside
+      className={`sidebar grid ${location.pathname !== "/" ? "none" : ""}`}
+    >
       <div className="header text-center flex flex-center spread px-sm py-xs fs-m">
         {page === "archived"
           ? `Archived Notes (${archives?.length})`
@@ -43,15 +50,8 @@ const Sidebar = () => {
           </i>
         )}
       </div>
-      <div className="pos-rel">
-        <BsSearch size={20} className="sidebar__search-icon pos-abs" />
-        <input
-          className="sidebar__search input full-width px-sm py-xs fs-s"
-          placeholder="Search Notes..."
-        />
-      </div>
       <ul className="sidebar__list">
-        {(page === "archived" ? archives : page === "trashed" ? trash : notes)
+        {notesToRender
           ?.sort((a, b) => b.isPinned - a.isPinned)
           .map((note) => (
             <NoteTile key={note._id} note={note} />
@@ -60,5 +60,4 @@ const Sidebar = () => {
     </aside>
   );
 };
-
 export default Sidebar;

@@ -12,7 +12,7 @@ import {
 } from "../services";
 
 export const useHandlers = () => {
-  const { setUser } = useUser();
+  const { setAllTags, setUser } = useUser();
   const navigate = useNavigate();
   const [tags, setTags] = useState([]);
   const [priority, setPriority] = useState("");
@@ -60,6 +60,7 @@ export const useHandlers = () => {
       notes: user.notes.map((node) => (node._id === _id ? note : node)),
     }));
     setTags(note.tags);
+    setAllTags((tags) => [...tags, tag]);
   };
 
   const updateNotePriorityHandler = async (priority, _id) => {

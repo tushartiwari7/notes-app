@@ -11,7 +11,7 @@ import {
 import { useLocation, useSearchParams } from "react-router-dom";
 import { useUser } from "../../context/Context";
 import { useHandlers } from "../../hooks/useHandlers";
-import { themes } from "../../utils/utils";
+import { debounce, themes } from "../../utils/utils";
 export const Editor = () => {
   const {
     user: { archives },
@@ -45,13 +45,6 @@ export const Editor = () => {
     restoreFromTrashHandler,
   } = useHandlers();
 
-  const debounce = (func, delay) => {
-    let inDebounce;
-    return (val) => {
-      clearTimeout(inDebounce);
-      inDebounce = setTimeout(() => func(val), delay);
-    };
-  };
   const debounced = debounce(updateNoteHandler, 500);
 
   useEffect(() => {
@@ -66,9 +59,8 @@ export const Editor = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [oldNote, oldNote._id]);
-
   return (
-    <main className="main grid editor">
+    <main className={`main grid editor `}>
       <header className="editor__header text-center flex flex-center px-sm py-xs fs-m">
         {page !== "trashed" ? (
           <>
@@ -163,7 +155,11 @@ export const Editor = () => {
           <form
             onSubmit={(event) => {
               event.preventDefault();
-              updateNoteTagsHandler(event.target.elements.tag.value);
+              updateNoteTagsHandler(
+                event.target.elements.tag.value,
+                false,
+                oldNote._id
+              );
               event.target.elements.tag.value = "";
             }}
           >

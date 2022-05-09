@@ -20,3 +20,11 @@ export const themes = [
     hexCode: "#1C1917",
   },
 ];
+
+export const debounce = (func, delay) => {
+  let inDebounce;
+  return (val) => {
+    clearTimeout(inDebounce);
+    inDebounce = setTimeout(() => func(val), delay);
+  };
+};

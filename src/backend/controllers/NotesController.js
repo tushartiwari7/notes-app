@@ -1,5 +1,5 @@
 import { Response } from "miragejs";
-import { requiresAuth } from "../utils/authUtils";
+import { formatDate, requiresAuth } from "../utils/authUtils";
 import { v4 as uuid } from "uuid";
 
 /**
@@ -51,6 +51,7 @@ export const createNoteHandler = function (schema, request) {
       tags: note.tags ?? [],
       priority: note.priority ?? "",
       isPinned: note.isPinned ?? false,
+      createdAt: formatDate(),
     };
     user.notes.push(newNote);
     this.db.users.update({ _id: user._id }, user);

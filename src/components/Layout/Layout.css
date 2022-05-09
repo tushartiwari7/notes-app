@@ -9,3 +9,12 @@
   border-bottom: 1px solid var(--border-color);
   background-color: var(--background-color);
 }
+
+@media screen and (max-width: 478px) {
+  .layout {
+    grid-template-columns: auto 1fr;
+  }
+  .none {
+    display: none;
+  }
+}

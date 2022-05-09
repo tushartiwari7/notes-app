@@ -3,6 +3,14 @@
   font-family: var(--highlighted-font);
   padding: 5px 10px;
 }
+.filters {
+  outline: 1px solid transparent;
+  color: var(--accent-color);
+  background-color: var(--background-color);
+  border: none;
+  border-bottom: 2px solid var(--highlight-color);
+}
+
 .sidebar {
   min-width: 20rem;
   border-right: 1px solid var(--border-color);

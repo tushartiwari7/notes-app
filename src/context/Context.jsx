@@ -5,7 +5,7 @@ const Context = createContext();
 export const ContextProvider = ({ children }) => {
   const [user, setUser] = useState({ isLoggedIn: false });
   const [pinned, setPin] = useState(false);
-
+  const [allTags, setAllTags] = useState([]);
   const updateNotePinHandler = async (isPinned, _id) => {
     const { note } = await updateNote({ isPinned, _id });
     setUser((user) => ({
@@ -21,8 +21,10 @@ export const ContextProvider = ({ children }) => {
       value={{
         user,
         pinned,
+        allTags,
         setUser,
         setPin,
+        setAllTags,
         handlers: { updateNotePinHandler },
       }}
     >
