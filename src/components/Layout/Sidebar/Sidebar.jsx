@@ -1,11 +1,12 @@
 import React from "react";
 import "./Sidebar.css";
-import { BsPencilSquare } from "react-icons/bs";
+import { BsPencilSquare, BsPlusLg } from "react-icons/bs";
 import NoteTile from "./NoteTile/NoteTile";
 import { createNew } from "../../../services";
 import { useUser } from "../../../context/Context";
 import { useNavigate, useSearchParams, useLocation } from "react-router-dom";
 import { useHandlers } from "../../../hooks/useHandlers";
+
 const Sidebar = () => {
   const {
     user: { notes, archives, trash },
@@ -50,6 +51,13 @@ const Sidebar = () => {
           </i>
         )}
       </div>
+      <button
+        className="pos-rel btn btn-primary px-sm py-xs fs-s"
+        onClick={createNote}
+      >
+        <BsPlusLg size={20} className="sidebar__search-icon pos-abs" />
+        Create New Note
+      </button>
       <ul className="sidebar__list">
         {notesToRender
           ?.sort((a, b) => b.isPinned - a.isPinned)
