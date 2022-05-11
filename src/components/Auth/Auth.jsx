@@ -3,7 +3,7 @@ import "./Auth.css";
 const Auth = () => {
   return (
     <main className="auth grid grid2">
-      <div className="flex flex-center">
+      <div className="flex flex-center banner">
         <img src="/logo.svg" width={150} alt="logo" />
       </div>
       <Outlet />

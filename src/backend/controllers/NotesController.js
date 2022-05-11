@@ -1,5 +1,5 @@
 import { Response } from "miragejs";
-import { requiresAuth } from "../utils/authUtils";
+import { formatDate, requiresAuth } from "../utils/authUtils";
 import { v4 as uuid } from "uuid";
 
 /**
@@ -45,7 +45,14 @@ export const createNoteHandler = function (schema, request) {
       );
     }
     const { note } = JSON.parse(request.requestBody);
-    const newNote = { ...note, _id: uuid(), tags: note.tags ?? [] };
+    const newNote = {
+      ...note,
+      _id: uuid(),
+      tags: note.tags ?? [],
+      priority: note.priority ?? "",
+      isPinned: note.isPinned ?? false,
+      createdAt: formatDate(),
+    };
     user.notes.push(newNote);
     this.db.users.update({ _id: user._id }, user);
     return new Response(201, {}, { note: newNote });
@@ -112,10 +119,21 @@ export const updateNoteHandler = function (schema, request) {
     }
     const { note } = JSON.parse(request.requestBody);
     const { noteId } = request.params;
+
     const noteIndex = user.notes.findIndex((note) => note._id === noteId);
-    user.notes[noteIndex] = { ...user.notes[noteIndex], ...note };
+    if (noteIndex !== -1)
+      user.notes[noteIndex] = { ...user.notes[noteIndex], ...note };
+
+    const archiveIndex = user.archives.findIndex((note) => note._id === noteId);
+    if (archiveIndex !== -1)
+      user.archives[archiveIndex] = { ...user.archives[archiveIndex], ...note };
     this.db.users.update({ _id: user._id }, user);
-    return new Response(201, {}, { note: user.notes[noteIndex] });
+
+    return new Response(
+      201,
+      {},
+      { note: user.notes[noteIndex] ?? user.archives[archiveIndex] }
+    );
   } catch (error) {
     return new Response(
       500,

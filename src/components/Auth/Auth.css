@@ -2,3 +2,12 @@
   height: 100vh;
   grid-template-columns: 1fr 1fr;
 }
+
+@media screen and (max-width: 768px) {
+  .auth {
+    grid-template-columns: 1fr;
+  }
+  .banner {
+    display: none;
+  }
+}

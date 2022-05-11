@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const needAxios = async (method, url, body) => {
-  const token = JSON.parse(localStorage.getItem("token"));
+  const token = localStorage.getItem("token");
   try {
     const { data, status } = await axios({
       method,

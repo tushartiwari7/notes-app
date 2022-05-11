@@ -29,7 +29,7 @@
 
 .login-form {
   font-family: var(--highlighted-font);
-  width: 50%;
+  min-width: 50%;
   margin: auto;
   gap: 2rem;
 }
