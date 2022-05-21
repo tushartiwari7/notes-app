@@ -80,9 +80,24 @@
   border: 1px solid var(--border-color);
   cursor: pointer;
 }
+.head {
+  margin-right: auto;
+  font-family: "Poppins", sans-serif;
+}
 .readOnly {
   cursor: not-allowed;
   opacity: 0.2;
+}
+.ql-editor {
+  font-size: 1.6rem;
+}
+.quill > .ql-toolbar.ql-snow,
+.quill > .ql-container.ql-snow {
+  border: none;
+  border-bottom: 2px solid var(--border-color);
+}
+.ql-container.ql-snow {
+  height: 88%;
 }
 
 @media screen and (max-width: 768px) {

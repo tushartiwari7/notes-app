@@ -14,7 +14,7 @@
 .sidebar {
   min-width: 20rem;
   border-right: 1px solid var(--border-color);
-  grid-template-rows: auto auto 1fr;
+  grid-template-rows: auto auto auto 1fr;
   height: 100vh;
 }
 .sidebar__list {

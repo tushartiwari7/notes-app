@@ -60,7 +60,13 @@ export const useHandlers = () => {
       notes: user.notes.map((node) => (node._id === _id ? note : node)),
     }));
     setTags(note.tags);
-    setAllTags((tags) => [...tags, tag]);
+    setAllTags((tags) =>
+      isRemove
+        ? tags.filter((prev) => prev !== tag)
+        : tags.includes(tag)
+        ? tags
+        : [...tags, tag]
+    );
   };
 
   const updateNotePriorityHandler = async (priority, _id) => {

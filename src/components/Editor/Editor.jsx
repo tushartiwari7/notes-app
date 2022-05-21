@@ -62,6 +62,7 @@ export const Editor = () => {
   return (
     <main className={`main grid editor `}>
       <header className="editor__header text-center flex flex-center px-sm py-xs fs-m">
+        <p className="head">Editor 👇</p>
         {page !== "trashed" ? (
           <>
             <select
