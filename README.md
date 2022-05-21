@@ -5,6 +5,7 @@
 
 - NOTE 
   - Create note
+  - AutoSave Notes as you type. 
   - Delete Note
   - Edit Note
   - Change background color
