@@ -24,6 +24,7 @@ const Sidebar = () => {
 
   const filterHandler = (e) => {
     const [type, value] = e.target.value.split(" ");
+    switch (type) {
       case "Priority:":
         return setFilters({ priority: value });
 
