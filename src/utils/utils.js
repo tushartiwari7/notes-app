@@ -30,11 +30,9 @@ export const debounce = (func, delay) => {
 };
 
 export const filterByTags = (notes, filters) => {
-  console.log({ notes, filters });
   const ans = filters.tag
     ? notes.filter((note) => note.tags.includes(filters.tag))
     : notes;
-  console.log({ ans });
   return ans;
 };
 
